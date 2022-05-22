@@ -1,0 +1,17 @@
+<div class="d-flex align-items-end flex-column p-1">
+    {% if user.is_authenticated %}
+        <div class="mb-1 text-muted">Signed in as <strong>{{ user.username }}</strong></div>
+        <div>
+            <a class="d-inline btn btn-outline-primary btn" role="button"
+                href="{% url 'logout' %}">Log Out</a>            
+        </div>
+    {% else %}
+        <div></div>
+        <div>
+            <a class="d-inline btn btn-outline-primary btn" role="button"
+                href="{% url 'login' %}">Log In</a>
+            <a class="d-inline btn btn-primary btn" role="button"
+                href="{% url 'register' %}">Register</a>            
+        </div>
+    {% endif %}
+</div>
