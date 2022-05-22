@@ -1,0 +1,13 @@
+{% extends 'TIS_app/base.html' %}
+
+{% block body %}
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    {{ form }}
+    <div class="d-inline-flex">
+        <a href="{% url 'all-inventory' %}" class="btn btn-danger position-absolute bottom-0 start-0 ms-4 mb-3" type="button">Back</a>
+        <button class="btn" type="submit">Confirm</button>        
+    </div>
+
+</form>
+{% endblock body %}
