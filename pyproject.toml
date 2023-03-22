@@ -95,7 +95,7 @@ exclude = '''
     sections=["FUTURE", "STDLIB", "THIRDPARTY", "OURLIBS", "FIRSTPARTY", "LOCALFOLDER"]
     default_section="THIRDPARTY"
     no_lines_before=["LOCALFOLDER", "THIRDPARTY"]
-    known_third_party=["beautifulsoup4"]
+    known_third_party=["beautifulsoup4", "rest_framework"]
     known_ourlibs=[]
     known_first_party=[]
 

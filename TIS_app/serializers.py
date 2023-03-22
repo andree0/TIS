@@ -35,9 +35,7 @@ class InventorySerializer(serializers.ModelSerializer):
 
 class PhotoTreeSerializer(serializers.ModelSerializer):
     tree = serializers.PrimaryKeyRelatedField(queryset=Tree.objects.all())
-    image = serializers.ImageField(
-        max_length=None, allow_empty_file=False, use_url=True
-    )
+    image = serializers.ImageField(max_length=None, allow_empty_file=False, use_url=True)
 
     class Meta:
         model = Photo

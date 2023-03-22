@@ -1,12 +1,11 @@
 from typing import Any, Dict
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Page, Paginator
 from django.db.models import Model
 from django.db.models.aggregates import Max
-from django.forms import BaseModelFormSet, Select, modelformset_factory
+from django.forms import BaseModelFormSet, modelformset_factory, Select
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -15,11 +14,7 @@ from django.views.generic import CreateView, DeleteView, FormView, ListView
 from django.views.generic.base import View
 from django.views.generic.edit import UpdateView
 from rest_framework import status
-from rest_framework.generics import (
-    CreateAPIView,
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView,
-)
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 
@@ -43,11 +38,8 @@ from TIS_app.models import (
     ValorizationTree,
 )
 from TIS_app.permissions import IsOwnerInventoryForObj, IsOwnerOrReadOnly
-from TIS_app.serializers import (
-    CommentTreeSerializer,
-    InventorySerializer,
-    PhotoTreeSerializer,
-)
+from TIS_app.serializers import CommentTreeSerializer, InventorySerializer, PhotoTreeSerializer
+
 
 # API views --------------------------------------------
 
@@ -179,9 +171,7 @@ class UpdateInventoryView(LoginRequiredMixin, UpdateView):
                     "value",
                 ),
                 extra=len(page_obj),
-                widgets={
-                    "is_biocenotic": Select(choices=[(False, "No"), (True, "Yes")])
-                },
+                widgets={"is_biocenotic": Select(choices=[(False, "No"), (True, "Yes")])},
             ),
             "management": modelformset_factory(
                 model=ManagementTree,
@@ -237,11 +227,7 @@ class UpdateInventoryView(LoginRequiredMixin, UpdateView):
     def get_success_url(self) -> str:
         try:
             if (page := self.request.GET.get("page")) is not None:
-                return (
-                    reverse_lazy("inventory-details", args=[self.object.pk])
-                    + "?page="
-                    + page
-                )
+                return reverse_lazy("inventory-details", args=[self.object.pk]) + "?page=" + page
             return reverse_lazy("inventory-details", args=[self.object.pk])
         except Exception:
             return super().get_success_url()
@@ -253,13 +239,9 @@ class UpdateInventoryView(LoginRequiredMixin, UpdateView):
             # check if form is valid and add message to storage
             if form.is_valid():
                 if form.has_changed():
-                    messages.success(
-                        request, "The inventory has been successfully updated."
-                    )
+                    messages.success(request, "The inventory has been successfully updated.")
             else:
-                messages.error(
-                    request, "Something went wrong! The inventory has not been updated."
-                )
+                messages.error(request, "Something went wrong! The inventory has not been updated.")
                 for field in form:
                     for err in field.errors:
                         messages.error(request, f"{field.name.upper()}: {err}")
@@ -337,9 +319,7 @@ class AddTreeToInventoryView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self) -> str:
         try:
-            return reverse_lazy(
-                "inventory-details", args=[self.kwargs.get("inventory_pk")]
-            )
+            return reverse_lazy("inventory-details", args=[self.kwargs.get("inventory_pk")])
         except Exception:
             return super().get_success_url()
 
@@ -370,9 +350,7 @@ class GaleryTreeView(LoginRequiredMixin, FormView):
 
     def get_initial(self) -> Dict[str, Any]:
         data = super().get_initial()
-        tree = get_object_or_404(
-            Tree, lp=self.kwargs["lp"], inventory=self.kwargs["inventory_pk"]
-        )
+        tree = get_object_or_404(Tree, lp=self.kwargs["lp"], inventory=self.kwargs["inventory_pk"])
         data["tree"] = tree.pk
         return data
 
