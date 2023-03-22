@@ -8,4 +8,4 @@ services:
     volumes:
       - .:/code
     env_file:
-      - ./project/.env
+      - .env

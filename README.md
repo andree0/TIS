@@ -70,8 +70,8 @@ Run the following commands in the terminal at the level of the directory where t
 
 You can use python3 instead of python.
 
-1. Run command `cp .env.template .env` in *project* directory
-2. Run command `pip install -r requirements.txt` in your enviroment
+1. Run command `cp .env.template .env`
+2. Run command `pip install -r requirements.lock.txt` in your enviroment
 3. Run command `python manage.py makemigrations`
 4. Run command `python manage.py migrate`
 5. Run command `python manage.py loadbasicspecies`
