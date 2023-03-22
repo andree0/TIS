@@ -1,0 +1,66 @@
+default_language_version:
+    python: python3.9
+default_stages: [commit, push, manual]
+
+repos:
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+        args: [--config=pyproject.toml]
+        files: '.*\.py$'
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args: ['--config=.flake8']
+        additional_dependencies: [flake8-bugbear]
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.1.1
+    hooks:
+      - id: mypy
+        args: [--config-file, pyproject.toml, --exclude, pyproject.toml]
+        additional_dependencies:
+          - types-requests
+          - types-PyYAML
+          - pydantic
+          - types-freezegun
+          - types-six
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: end-of-file-fixer
+        files: '.*\.py$'
+      - id: fix-encoding-pragma
+        args: [--remove]
+        files: '.*\.py$'
+      - id: trailing-whitespace
+        files: '.*\.py$'
+      - id: requirements-txt-fixer
+        files: 'requirements\..*\.txt$'
+        stages: [push, manual]
+      - id: check-toml
+        files: '.*\.toml$'
+      - id: check-merge-conflict
+        files: '.*'
+
+  - repo: https://github.com/IamTheFij/docker-pre-commit
+    rev: "v2.1.1"
+    hooks:
+      - id: docker-compose-check
+        files: 'docker-compose.*\.ya?ml$'
+
+  - repo: https://github.com/jazzband/pip-tools
+    rev: "6.12.3"
+    hooks:
+    - id: pip-compile
+      files: 'requirements\.txt$'
+      args: ["--output-file=requirements.lock.txt", "--no-emit-index-url", "requirements.txt"]

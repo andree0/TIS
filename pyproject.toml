@@ -1,0 +1,122 @@
+[tool.poetry]
+name = "TIS"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+license = "Proprietary"
+
+authors = [
+    "Andrzej Jończy <jonek.andree@gmail.com>",
+]
+
+maintainers = [
+    "Andrzej Jończy <jonek.andree@gmail.com>",
+]
+
+classifiers = [
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.pytest.ini_options]
+    addopts = '-m "not test_db"'
+    markers = [
+        "asyncio",
+        "all: all tests",
+        ]
+    asyncio_mode = "auto"
+    python_files = ["tests.py", "test_*.py", "*_test.py", "tests_*.py", "*_tests.py", "*_test_*.py", "*_tests_*.py"]
+
+
+[tool.black]
+line-length = 100
+# Target version for Python 3.8 or 3.9 (not yet supported)
+target-version = ['py39']
+
+exclude = '''
+  (
+   /(
+     \.git
+   | \.mypy_cache
+   | \.venv
+   | venv
+   | config
+   )
+  )
+  '''
+
+[tool.coverage.run]
+    branch = true
+    omit = [
+        "*/__main__.py",
+        "*/manage.py",
+        "*/tests/*",
+        "*/venv/*",
+        "*/.venv/*",
+        "*/env/*",
+        "*/.env/*",
+        "*/__init__.py",
+        ]
+
+[tool.coverage.report]
+    exclude_lines = [
+        # Have to re-enable the standard pragma
+        "pragma: no cover",
+
+        # Don't complain about missing debug-only code:
+        "def __repr__",
+        "if self.debug",
+
+        # Don't complain if tests don't hit defensive assertion code:
+        "raise AssertionError",
+        "raise NotImplementedError",
+
+        # Don't complain if non-runnable code isn't run:
+        "if 0:",
+        "if __name__ == .__main__.:",
+    ]
+
+[tool.isort]
+    # https://github.com/timothycrosley/isort/wiki/isort-Settings
+    profile = "black"
+    multi_line_output=3
+
+    indent='    '
+    line_length=100
+    lines_after_imports=2
+
+    sections=["FUTURE", "STDLIB", "THIRDPARTY", "OURLIBS", "FIRSTPARTY", "LOCALFOLDER"]
+    default_section="THIRDPARTY"
+    no_lines_before=["LOCALFOLDER", "THIRDPARTY"]
+    known_third_party=["beautifulsoup4"]
+    known_ourlibs=[]
+    known_first_party=[]
+
+    use_parentheses=true
+    include_trailing_comma=true
+
+    order_by_type=false
+    combine_star=true
+
+    skip=["venv", ".venv", "tests/conftest.py", "documentation"]
+
+[tool.mypy]
+    python_version = "3.9"
+    ignore_missing_imports = true
+    strict_optional = false
+    show_traceback = true
+    pretty = true
+    plugins = [
+        "pydantic.mypy",
+    ]
+    exclude = [
+        "./venv",
+        "./.venv",
+    ]
